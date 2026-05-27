@@ -54,15 +54,15 @@ Example:
 # Project Structure
 
 SecureCloud-Tourist-API
-│
-├── app.py
-├── README.md
-├── architecture
-├── cloud
-├── docker
-├── screenshots
-├── troubleshooting
-└── workflow
+
+|app.py
+|README.md
+|architecture
+|cloud
+|docker
+|screenshots
+|troubleshooting
+|workflow
 
 ## Learning Objectives
 
