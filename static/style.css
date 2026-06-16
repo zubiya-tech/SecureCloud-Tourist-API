@@ -1,0 +1,64 @@
+/* Tourist Search App Styling */
+
+/* Page background */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Main content area */
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Page title */
+h1 {
+    color: #333;
+}
+
+/* Search box */
+input {
+    padding: 12px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+/* Search button */
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Results section */
+#results {
+    margin-top: 20px;
+}
+
+/* Destination cards */
+.card {
+    background: white;
+    width: 320px;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+/* Destination images */
+.card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Links */
+.card a {
+    text-decoration: none;
+}
