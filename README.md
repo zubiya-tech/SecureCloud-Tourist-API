@@ -1,80 +1,50 @@
-# SecureCloud Tourist API
+Tourist Spot Explorer
 
-Beginner backend infrastructure project built using Flask and Python.
+A Flask and SQLite web application that allows users to search tourist destinations by city.
 
-## Project Goal
+Features
 
-This project simulates a tourism backend API that provides tourist destination data.
+- Search tourist destinations by city
+- View destination details
+- Destination images
+- SQLite database
+- Flask backend
+- AWS EC2 deployment
+- Security headers
+- Rate limiting
+- Automatic startup using systemd
 
-The project is designed to help learn:
-
-- Backend development
-- APIs
-- JSON responses
-- Linux basics
-- Cloud concepts
-- Docker fundamentals
-- Troubleshooting
-- Git & GitHub workflow
-
-## Features
-
-- Get all tourist spots
-- Filter tourist spots by city
-- Health check endpoint
-- JSON API responses
-
-
-## Technologies Used
+Technologies Used
 
 - Python
 - Flask
-- Linux (Termux)
+- SQLite
+- HTML
+- CSS
+- JavaScript
+- AWS EC2
 - Git & GitHub
 
-# API Endpoints
+Example Cities
 
-# Get all tourist spots
+- Agra
+- Delhi
+- Mumbai
 
-/spots
+Project Goal
 
-# Get spots by city
+This project was built to learn:
 
-/spots/<city>
+- Backend Development
+- Database Integration
+- Cloud Deployment
+- Linux Server Management
+- Git and GitHub
 
-Example:
+Future Improvements
 
-/spots/Mumbai
-
-# Health check
-
-/health
-
-
-# Project Structure
-
-SecureCloud-Tourist-API
-
-|app.py
-|README.md
-|architecture
-|cloud
-|docker
-|screenshots
-|troubleshooting
-|workflow
-
-## Learning Objectives
-
-This project helps understand:
-
-- Backend architecture
-- API request flow
-- HTTP communication
-- Localhost & ports
-- Infrastructure basics
-- Debugging workflows
-
-## Author
-
-Built by Zubiya
+- More destinations
+- More images
+- Better UI
+- Category filters
+- HTTPS support
