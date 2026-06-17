@@ -1,126 +1,106 @@
 # SecureCloud Tourist API
-# Beginner Backend Project
-# Built by Zubiya
+# Built by Zubiya | Flask + SQLite + AWS EC2
 
 from flask import Flask, jsonify, render_template, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import sqlite3
 import logging
+import os
 
-# Create Flask application
 app = Flask(__name__)
 
-# Secret API key - only people with this can access the API
-API_KEY = "zt-8f3k9x2m7q1w4e6r0p5n"
+# API key loaded from environment variable, not hardcoded
+API_KEY = os.environ.get("API_KEY")
 
-# Setup logging - records every request to api.log file
 logging.basicConfig(
     filename="api.log",
     level=logging.INFO,
     format="%(asctime)s - %(message)s"
 )
 
-# Rate limiter - max 100 requests per minute per user
+# Rate limiting: max 100 requests/minute per IP - prevents abuse
 limiter = Limiter(
     get_remote_address,
     app=app,
     default_limits=["100 per minute"]
 )
 
-# Security headers - added to every response automatically
 @app.after_request
 def add_security_headers(response):
-    # Stops browser from guessing file types
+    # Prevents MIME sniffing and clickjacking attacks
     response.headers["X-Content-Type-Options"] = "nosniff"
-    # Stops your API being loaded inside another website
     response.headers["X-Frame-Options"] = "DENY"
     return response
 
-# Function to connect to SQLite database
 def connect_db():
     connection = sqlite3.connect("tourist.db")
-    # Makes results come back as dictionaries
     connection.row_factory = sqlite3.Row
     return connection
 
-# Function to check API key on every request
 def check_api_key():
     key = request.headers.get("X-API-Key")
-    if key != API_KEY:
-        return False
-    return True
+    return key == API_KEY
 
-# Home route - shows the HTML search page
 @app.route('/')
 def home():
     return render_template("index.html")
 
-# Get ALL tourist spots
+@app.route('/health')
+def health():
+    logging.info(f"Health check from {request.remote_addr}")
+    return jsonify({"status": "healthy", "server": "running"})
+
 @app.route('/spots')
 def get_spots():
+    if not check_api_key():
+        logging.warning(f"Unauthorized /spots attempt from {request.remote_addr}")
+        return jsonify({"error": "Unauthorized. Send API key in X-API-Key header."}), 401
+
+    logging.info(f"GET /spots from {request.remote_addr}")
     connection = connect_db()
     spots = connection.execute("SELECT * FROM tourist_spots").fetchall()
     connection.close()
-    result = []
-    for spot in spots:
-        result.append(dict(spot))
-    return jsonify({
-        "status": "success",
-        "total_spots": len(result),
-        "data": result
-    })
+    result = [dict(spot) for spot in spots]
+    return jsonify({"status": "success", "total_spots": len(result), "data": result})
 
-# Get tourist spots for ONE specific city
 @app.route('/spots/<city>')
 def get_city_spots(city):
-    # Only allow letters and spaces - blocks injection attacks
+    if not check_api_key():
+        logging.warning(f"Unauthorized /spots/{city} attempt from {request.remote_addr}")
+        return jsonify({"error": "Unauthorized. Send API key in X-API-Key header."}), 401
+
+    # Input validation: blocks special characters and SQL injection at route level
     if not city.replace(" ", "").isalpha():
-        return jsonify({"error": "Invalid city name"}), 400
+        return jsonify({"error": "Invalid city name. Only letters allowed."}), 400
+
+    logging.info(f"GET /spots/{city} from {request.remote_addr}")
+
+    # Parameterized query prevents SQL injection
     connection = connect_db()
     spots = connection.execute(
-        "SELECT * FROM tourist_spots WHERE city = ?",
-        (city,)
+        "SELECT * FROM tourist_spots WHERE city = ?", (city,)
     ).fetchall()
     connection.close()
-    result = []
-    for spot in spots:
-        result.append(dict(spot))
-    # if no city found return 404
-    if len(result) == 0:
-        return jsonify({"error": "City not found"}), 404
-    return jsonify({
-        "city": city,
-        "results": result
-    })
 
-# Single destination page - converts Taj-Mahal to Taj Mahal
+    result = [dict(spot) for spot in spots]
+    if not result:
+        return jsonify({"error": f"No spots found for: {city}"}), 404
+
+    return jsonify({"city": city, "total_results": len(result), "data": result})
+
 @app.route('/spot/<name>')
 def get_spot(name):
-    connection = connect_db()
-    # Replace hyphens with spaces for URL friendliness
     destination_name = name.replace("-", " ")
+    logging.info(f"GET /spot/{destination_name} from {request.remote_addr}")
+    connection = connect_db()
     spot = connection.execute(
-        "SELECT * FROM tourist_spots WHERE name = ?",
-        (destination_name,)
+        "SELECT * FROM tourist_spots WHERE name = ?", (destination_name,)
     ).fetchone()
     connection.close()
     if spot is None:
         return "Destination not found", 404
     return render_template("spot.html", spot=dict(spot))
 
-# Health check - quick way to verify server is running
-@app.route('/health')
-def health():
-    return jsonify({
-        "status": "healthy",
-        "server": "running"
-    })
-
-# Start Flask server
 if __name__ == "__main__":
-    app.run(
-        debug=False,
-        host="0.0.0.0",
-        port=5000
-    )
+    app.run(debug=False, host="0.0.0.0", port=5000)
