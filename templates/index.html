@@ -6,28 +6,46 @@
 </head>
 
 <body>
+<div class="container">
 
-    <div class="container">
+    <h1>Tourist Spot Explorer</h1>
+    <p class="subtitle">Search tourist destinations across India</p>
 
-        <h1>Tourist Spot Explorer</h1>
-
-        <p>Search tourist destinations across India</p>
-
+    <!-- Search bar -->
+    <div class="search-bar">
         <input
             type="text"
             id="cityInput"
-            placeholder="Enter city name"
+            placeholder="Enter city (e.g. Agra, Delhi, Goa)"
         >
-
-        <button onclick="searchCity()">
-            Search
-        </button>
-
-        <div id="results"></div>
-
+        <button onclick="searchCity()">Search</button>
     </div>
 
-    <script src="/static/script.js"></script>
+    <!-- Category filter buttons -->
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterByCategory('All')">All</button>
+        <button class="filter-btn" onclick="filterByCategory('Monument')">Monument</button>
+        <button class="filter-btn" onclick="filterByCategory('Temple')">Temple</button>
+        <button class="filter-btn" onclick="filterByCategory('Beach')">Beach</button>
+        <button class="filter-btn" onclick="filterByCategory('Nature')">Nature</button>
+        <button class="filter-btn" onclick="filterByCategory('Palace')">Palace</button>
+        <button class="filter-btn" onclick="filterByCategory('Historical')">Historical</button>
+    </div>
 
+    <!-- Shows how many results found -->
+    <div class="stats" id="stats"></div>
+
+    <!-- Search results appear here -->
+    <div id="results"></div>
+
+    <!-- API usage counter -->
+    <div class="api-counter">
+        <h3>API Requests Made</h3>
+        <div class="count" id="requestCount">0</div>
+    </div>
+
+</div>
+
+<script src="/static/script.js"></script>
 </body>
 </html>

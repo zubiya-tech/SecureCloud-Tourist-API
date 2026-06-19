@@ -1,35 +1,48 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
     <title>{{ spot.name }}</title>
 
+    <!-- Connect CSS file -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
-    <!-- Destination Name -->
-    <h1>{{ spot.name }}</h1>
+    <!-- Main container -->
+    <div class="container">
 
-    <!-- City -->
-    <p>
-        <b>City:</b>
-        {{ spot.city }}
-    </p>
+        <!-- Destination image -->
+        <img src="{{ spot.image_url }}"
+             alt="{{ spot.name }}"
+             class="spot-image">
 
-    <!-- Category -->
-    <p>
-        <b>Category:</b>
-        {{ spot.category }}
-    </p>
+        <!-- Destination name -->
+        <h1>{{ spot.name }}</h1>
 
-    <!-- Description -->
-    <p>
-        {{ spot.description }}
-    </p>
+        <!-- City -->
+        <p>
+            <strong>City:</strong>
+            {{ spot.city }}
+        </p>
+
+        <!-- Category -->
+        <p>
+            <strong>Category:</strong>
+            {{ spot.category }}
+        </p>
+
+        <!-- Description -->
+        <p>
+            {{ spot.description }}
+        </p>
+
+        <!-- Back button -->
+        <a href="/" class="button">
+            ← Back to Search
+        </a>
+
+    </div>
 
 </body>
-
 </html>
-
