@@ -1,10 +1,10 @@
-// API key - needed to access our protected Flask API
+// API key to access our protected Flask API
 const API_KEY = "zt-8f3k9x2m7q1w4e6r0p5n";
 
-// Stores the last search results so category filter works without re-fetching
+// Saves last search results so filters work without calling API again
 let allResults = [];
 
-// Counts how many API requests were made this session
+// Counts requests made this session
 let requestCount = 0;
 
 
@@ -12,19 +12,18 @@ function searchCity() {
 
     let city = document.getElementById("cityInput").value.trim();
 
-    // Stop if user clicked search with empty input
+    // Don't search if input is empty
     if (!city) {
         document.getElementById("results").innerHTML =
             "<p class='no-results'>Please enter a city name.</p>";
         return;
     }
 
-    // Show loading while waiting for server response
     document.getElementById("results").innerHTML =
         "<p class='loading'>Loading...</p>";
     document.getElementById("stats").innerHTML = "";
 
-    // Call our Flask API - send API key in request header for authentication
+    // Send request to Flask API with API key in header
     fetch("/spots/" + city, {
         headers: {
             "X-API-Key": API_KEY
@@ -33,11 +32,10 @@ function searchCity() {
     .then(response => response.json())
     .then(data => {
 
-        // Track number of requests made
         requestCount++;
         document.getElementById("requestCount").innerText = requestCount;
 
-        // API returns results inside "data" key
+        // API sends results inside "data" key
         if (!data.data || data.data.length === 0) {
             document.getElementById("results").innerHTML =
                 "<p class='no-results'>No tourist spots found for " + city + ".</p>";
@@ -45,12 +43,8 @@ function searchCity() {
             return;
         }
 
-        // Save results so filters can use them without calling API again
         allResults = data.data;
-
-        // Reset filter buttons to All
         setActiveFilter("All");
-
         displayResults(allResults);
     })
     .catch(error => {
@@ -77,19 +71,11 @@ function displayResults(spots) {
 
     spots.forEach(spot => {
 
-        // Convert "Taj Mahal" to "Taj-Mahal" for the detail page URL
+        // Convert "Taj Mahal" to "Taj-Mahal" for the URL
         let urlName = spot.name.replaceAll(" ", "-");
-
-        // Only add image tag if image exists in database
-        let imageHTML = "";
-        if (spot.image_url) {
-            imageHTML = "<img src='" + spot.image_url +
-                "' onerror='this.style.display=\"none\"'>";
-        }
 
         resultsDiv.innerHTML +=
             "<div class='card'>" +
-            imageHTML +
             "<div class='card-body'>" +
             "<span class='badge'>" + spot.category + "</span>" +
             "<h3><a href='/spot/" + urlName + "'>" + spot.name + "</a></h3>" +
@@ -102,7 +88,7 @@ function displayResults(spots) {
 
 function filterByCategory(category) {
 
-    // Do nothing if user hasn't searched yet
+    // Do nothing if no search has been done yet
     if (allResults.length === 0) return;
 
     setActiveFilter(category);
@@ -110,7 +96,7 @@ function filterByCategory(category) {
     if (category === "All") {
         displayResults(allResults);
     } else {
-        // Filter from saved results - no new API call needed
+        // Filter saved results - no new API call needed
         let filtered = allResults.filter(spot => spot.category === category);
         displayResults(filtered);
     }
@@ -118,7 +104,7 @@ function filterByCategory(category) {
 
 
 function setActiveFilter(category) {
-    // Remove active class from all buttons, add it to selected one
+    // Remove active style from all buttons, add it to selected one
     document.querySelectorAll(".filter-btn").forEach(btn => {
         btn.classList.remove("active");
         if (btn.innerText === category) {
@@ -128,7 +114,7 @@ function setActiveFilter(category) {
 }
 
 
-// Allow pressing Enter key to trigger search
+// Press Enter to search instead of clicking button
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("cityInput").addEventListener("keypress", function(e) {
         if (e.key === "Enter") {
