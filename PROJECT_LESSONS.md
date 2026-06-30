@@ -1,43 +1,55 @@
-Project 1 Lessons Learned
+# What I Learned — Project 1
 
-Project Name
+Before this project I had never built a backend application. I did not understand how a database connects to an API or how an application runs on a real server. I learned these things by building the project, facing errors, and fixing them.
 
-Tourist Spot Explorer
+## What I Built
 
-Technical Skills Learned
+SecureCloud Tourist API — a Flask + SQLite tourist destination search application deployed on AWS EC2.
 
-- Flask Basics
-- SQLite Databases
-- Linux Commands
-- AWS EC2 Deployment
-- Git and GitHub
-- Systemd Services
-- HTML, CSS and JavaScript Basics
+Users can search cities, view destinations, and access API endpoints protected with basic security controls.
 
-Problems Solved
+## Technical Skills I Learned
 
-- Flask route errors
-- Python indentation errors
-- SQLite database updates
-- GitHub push issues
-- AWS deployment problems
-- Systemd service configuration
+### Flask
+I learned how to create routes, return JSON responses, handle requests, and structure a backend application.
 
-What I Learned About Cloud
+### SQLite
+I learned how to connect Python with a database, write queries, and use parameterized queries to prevent SQL injection.
 
-- How to launch an EC2 instance
-- How to connect using SSH
-- How to deploy a Flask application
-- How to keep an application running using systemd
+### Cloud Deployment
+I learned how to launch an AWS EC2 instance, connect through SSH, deploy the application, open ports, and keep the application running using systemd.
 
-What I Would Improve
+### Security
+I learned:
+- API key authentication
+- Rate limiting
+- Input validation
+- Security headers
+- Logging
+- Environment variables
+- SQL injection prevention
 
-- Better user interface
-- More tourist destinations
-- More images
-- HTTPS support
-- Better search experience
+## Problems I Actually Faced
 
-Biggest Achievement
+The hardest part was understanding how the API, database, and server work together.
 
-Successfully deployed my first web application on AWS EC2 and made it available online.
+I faced:
+- Git push and merge problems
+- Port conflicts from old Flask processes
+- Database files being tracked by Git
+- Fixing API authentication issues
+- Keeping the app running after closing SSH
+
+## Biggest Achievement
+
+The biggest achievement was deploying a real application on AWS EC2 that is accessible from the internet and can reject unauthorized API requests.
+
+This was the first time I built something that was not just running on my own computer.
+
+## What I Would Improve Next
+
+- Add HTTPS
+- Improve authentication
+- Add more destinations
+- Add pagination
+- Improve production deployment
