@@ -242,7 +242,8 @@ Current limitations:
 
 The biggest thing I learned is that building an application is more than writing code.
 
-So I built this project to learn those things by actually doing them.
+
+So instead of just watching tutorials, I built this and learned by breaking things and fixing them.
 
 This project helped me understand the complete journey from code → server → real users.
 
