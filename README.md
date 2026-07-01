@@ -212,9 +212,8 @@ I had to solve real problems:
 - Database files being tracked by Git
 - Debugging API authentication problems
 
-These problems taught me more than just following tutorials.
-
----
+Honestly, these problems taught me more than the tutorials because I had to actually figure out what was happening.
+___
 
 ## Limitations
 
@@ -243,7 +242,7 @@ Current limitations:
 
 The biggest thing I learned is that building an application is more than writing code.
 
-You have to deploy it, debug it, secure it, and understand how all the parts connect.
+So I built this project to learn those things by actually doing them.
 
 This project helped me understand the complete journey from code → server → real users.
 
