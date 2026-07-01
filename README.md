@@ -1,72 +1,71 @@
 # SecureCloud Tourist API
 
-A tourist destination search app where users can enter a city name and view tourist destinations. Built with Flask and SQLite, and deployed on AWS EC2.
+A simple tourist destination search app.
 
-Live Demo: http://54.242.127.95:5000
+You enter a city, it finds tourist spots from a database, and shows the details.
+
+Built with Flask + SQLite and deployed on an AWS EC2 server.
+
+Live:
+http://54.242.127.95:5000
 
 ---
 
 ## Why I Built This
 
-I built this project to learn how backend development works in real life.
+Before this project, I mostly worked with frontend and small scripts. I wanted to understand what happens behind the screen.
 
-I wanted to understand how a database connects to an API, how to deploy an application on a real server, and how security is added to a web application.
+How does a database connect to an API?  
+How does an application run on a real server?  
+How do you add security to something people can access from the internet?
 
-This project helped me learn Flask, SQLite, Linux, AWS EC2, Git, and basic API security by building, testing, and debugging a real application.
+So I built this project to learn those things by actually doing them.
+
+This became my first backend + cloud deployment project.
+
+I learned Flask, SQLite, Linux, AWS EC2, Git, and basic API security while building, testing, and fixing real problems.
 
 ---
 
 ## What It Does
 
-- Search tourist destinations by city name
+The app allows users to:
+
+- Search tourist destinations by city
 - Filter results by category
-- View a detail page for each destination
-- REST API that returns JSON responses
+- Open a detail page for each destination
+- Access API responses in JSON format
 
 ---
 
-## Cities and Destinations
+## Supported Cities
 
-| City | Destinations |
-|------|-------------|
-| Agra | Taj Mahal, Agra Fort |
-| Delhi | Red Fort, India Gate, Qutub Minar |
-| Mumbai | Gateway of India |
-| Kashmir | Dal Lake |
-| Jaipur | Hawa Mahal, Amer Fort |
-| Hyderabad | Charminar, Golconda Fort |
-| Mysore | Mysore Palace |
-| Amritsar | Golden Temple |
-| Aurangabad | Ajanta Caves, Ellora Caves |
-| Konark | Konark Sun Temple |
-| Madurai | Meenakshi Temple |
-| Chennai | Marina Beach |
-| Goa | Baga Beach |
-| Manali | Manali Hills |
-| Leh | Leh Palace, Pangong Lake |
-| Ooty | Ooty Lake |
-| Munnar | Munnar Tea Gardens |
-| Puri | Jagannath Temple |
+Currently added destinations include:
 
----
-
-## Screenshots
-
-### Homepage
-
-![Homepage](screenshots/home-page.png)
-
-### Search Results
-
-![Search Results](screenshots/search-results.png)
-
-### Destination Page
-
-![Destination Page](screenshots/destination-page.png)
+- Agra — Taj Mahal, Agra Fort
+- Delhi — Red Fort, India Gate, Qutub Minar
+- Mumbai — Gateway of India
+- Kashmir — Dal Lake
+- Jaipur — Hawa Mahal, Amer Fort
+- Hyderabad — Charminar, Golconda Fort
+- Mysore — Mysore Palace
+- Amritsar — Golden Temple
+- Aurangabad — Ajanta Caves, Ellora Caves
+- Konark — Konark Sun Temple
+- Madurai — Meenakshi Temple
+- Chennai — Marina Beach
+- Goa — Baga Beach
+- Manali — Manali Hills
+- Leh — Leh Palace, Pangong Lake
+- Ooty — Ooty Lake
+- Munnar — Munnar Tea Gardens
+- Puri — Jagannath Temple
 
 ---
 
-## Architecture
+## How It Works
+
+The flow is:
 
 ```
 User Browser
@@ -78,77 +77,74 @@ Flask Application (AWS EC2)
 SQLite Database
 ```
 
-Deployment:
+The application runs on Amazon Linux using systemd.
 
-- AWS EC2
-- Amazon Linux
-- systemd service for automatic startup
+This allows the app to start automatically after a server reboot and restart if it crashes.
 
 ---
 
-# Security Features
+## Security I Added
 
-I added these security features while building the project:
+While building this project I added:
 
-## API Key Authentication
+### API Key Authentication
 
-The data endpoints are protected using API key authentication.
+Protected endpoints require an API key.
 
-Without the correct key:
+Without the key, the API rejects unauthorized requests.
+
+Example:
 
 ```bash
 curl http://54.242.127.95:5000/spots
-
-{"error":"Unauthorized. Send API key in X-API-Key header."}
 ```
 
-With the key:
+Response:
 
-```bash
-curl http://54.242.127.95:5000/spots/Delhi \
--H "X-API-Key: your-key"
+```json
+{
+ "error": "Unauthorized"
+}
 ```
 
 ---
 
-## Rate Limiting
+### Rate Limiting
 
-Maximum 100 requests per minute per IP address.
+Limits requests to:
 
-This helps reduce API abuse and excessive requests.
+100 requests per minute per IP
 
----
-
-## Input Validation
-
-City names are checked before database queries.
-
-This prevents invalid input and reduces the risk of malicious requests.
+This reduces excessive API requests and abuse.
 
 ---
 
-## Parameterized SQL Queries
+### Input Validation
 
-User input is never directly inserted into SQL queries.
+User input is checked before database queries.
 
-Parameterized queries are used to prevent SQL injection attacks.
+This prevents invalid requests from reaching the database.
 
 ---
 
-## Security Headers
+### SQL Injection Protection
 
-Responses include:
+I used parameterized SQL queries instead of directly placing user input into SQL commands.
+
+---
+
+### Security Headers
+
+Added:
 
 - X-Frame-Options
 - X-Content-Type-Options
 
-These provide additional browser security protections.
-
 ---
 
-## Request Logging
+### Logging
 
-API requests are stored in log files with:
+Requests are stored with:
 
 - Timestamp
 - Request information
@@ -156,43 +152,38 @@ API requests are stored in log files with:
 
 ---
 
-## Environment Variables
+## API Endpoints
 
-Sensitive values are managed using environment variables on the backend.
-
-The current frontend authentication approach is a known limitation and can be improved with stronger authentication methods in future projects.
-
----
-
-# API Endpoints
-
-| Method | Endpoint | Auth Required | Description |
-|---|---|---|---|
-| GET | / | No | Search homepage |
-| GET | /health | No | Check if server is running |
-| GET | /spots | Yes | Get all tourist spots |
-| GET | /spots/<city> | Yes | Get spots for one city |
-| GET | /spot/<name> | No | Detail page for one destination |
-
----
-
-# Tech Stack
-
-| Technology | Purpose |
+| Endpoint | Authentication |
 |---|---|
-| Python + Flask | Backend API |
-| SQLite | Database |
-| HTML, CSS, JavaScript | Frontend |
-| AWS EC2 | Cloud hosting |
-| systemd | Keeps application running |
-| Git + GitHub | Version control |
+| / | No |
+| /health | No |
+| /spots | Yes |
+| /spots/<city> | Yes |
+| /spot/<name> | No |
 
 ---
 
-# Project Structure
+## Tech Stack
+
+- Python
+- Flask
+- SQLite
+- HTML
+- CSS
+- JavaScript
+- AWS EC2
+- Linux
+- systemd
+- Git
+- GitHub
+
+---
+
+## Project Structure
 
 ```
-SecureCloud-Tourist-API/
+SecureCloud-Tourist-API
 
 ├── app.py
 ├── requirements.txt
@@ -209,46 +200,53 @@ SecureCloud-Tourist-API/
 
 ---
 
-# How to Run Locally
+## Problems I Faced
 
-```bash
-git clone https://github.com/zubiya-tech/SecureCloud-Tourist-API.git
+This project was not only about writing code.
 
-cd SecureCloud-Tourist-API
+I had to solve real problems:
 
-pip install -r requirements.txt
+- Flask app stopping after closing SSH
+- Port conflicts from old processes
+- Git push and merge issues
+- Database files being tracked by Git
+- Debugging API authentication problems
 
-python app.py
-```
+Honestly, these problems taught me more than the tutorials because I had to actually figure out what was happening.
+___
 
----
+## Limitations
 
-# Known Limitations
+This is a learning project, not a production system.
 
-- The application currently uses HTTP instead of HTTPS, so data is not encrypted in transit.
-- SQLite works well for this learning project but is not suitable for high-traffic production systems.
-- Authentication can be improved further with sessions, OAuth, or other secure methods.
+Current limitations:
 
----
-
-# What I Would Add Next
-
-- HTTPS support
-- Better authentication system
-- More cities and destinations
-- Pagination for larger datasets
-- PostgreSQL for production-level database usage
+- HTTP instead of HTTPS
+- SQLite instead of a production database
+- Basic authentication system
+- Limited destinations
 
 ---
 
-# What I Learned
+## Future Improvements
 
-This was my first backend and cloud deployment project.
-
-The hardest part was understanding how the API, database, and server connect together — and testing that the security features actually work, not just writing the code.
-
-I learned that building an application is not only about coding. It is also about deploying, debugging, securing, and maintaining the system.
+- Add HTTPS
+- Improve authentication
+- Move to PostgreSQL
+- Add pagination
+- Add more destinations
 
 ---
 
-Built by Zubiya
+## What I Learned
+
+The biggest thing I learned is that building an application is more than writing code.
+
+
+So instead of just watching tutorials, I built this and learned by breaking things and fixing them.
+
+This project helped me understand the complete journey from code → server → real users.
+
+---
+
+Built by Zubiya 
