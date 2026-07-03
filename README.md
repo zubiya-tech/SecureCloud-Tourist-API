@@ -1,86 +1,76 @@
 # SecureCloud Tourist API
 
-A simple tourist destination search app.
+A simple tourist destination search app. You enter a city, it finds tourist spots from a database, and shows the details.
 
-You enter a city, it finds tourist spots from a database, and shows the details.
+Built with Flask + SQLite, deployed on an AWS EC2 server.
 
-Built with Flask + SQLite and deployed on an AWS EC2 server.
-
-Live:
-http://54.242.127.95:5000
-
----
+Live: http://54.242.127.95:5000
 
 ## Why I Built This
 
-Before this project, I mostly worked with frontend and small scripts. I wanted to understand what happens behind the screen.
+Before this I mostly worked with frontend and small scripts. I wanted to understand what's actually happening behind the screen — how a database connects to an API, how something runs on a real server instead of localhost, how you add security to a thing people can hit from the internet.
 
-How does a database connect to an API?  
-How does an application run on a real server?  
-How do you add security to something people can access from the internet?
+So I built this to learn those things by doing them, not watching a tutorial about them.
 
-So I built this project to learn those things by actually doing them.
-
-This became my first backend + cloud deployment project.
-
-I learned Flask, SQLite, Linux, AWS EC2, Git, and basic API security while building, testing, and fixing real problems.
-
----
+First backend + cloud deployment project I've done. Learned Flask, SQLite, Linux, EC2, Git, and basic API security along the way mostly by breaking things and fixing them.
 
 ## What It Does
 
-The app allows users to:
-
 - Search tourist destinations by city
-- Filter results by category
+- Filter by category
 - Open a detail page for each destination
-- Access API responses in JSON format
-
----
+- JSON API behind all of it if you want raw data
 
 ## Supported Cities
 
-Currently added destinations include:
+Agra — Taj Mahal, Agra Fort
+Delhi — Red Fort, India Gate, Qutub Minar
+Mumbai — Gateway of India
+Kashmir — Dal Lake
+Jaipur — Hawa Mahal, Amer Fort
+Hyderabad — Charminar, Golconda Fort
+Mysore — Mysore Palace
+Amritsar — Golden Temple
+Aurangabad — Ajanta Caves, Ellora Caves
+Konark — Konark Sun Temple
+Madurai — Meenakshi Temple
+Chennai — Marina Beach
+Goa — Baga Beach
+Manali — Manali Hills
+Leh — Leh Palace, Pangong Lake
+Ooty — Ooty Lake
+Munnar — Munnar Tea Gardens
+Puri — Jagannath Temple
 
-- Agra — Taj Mahal, Agra Fort
-- Delhi — Red Fort, India Gate, Qutub Minar
-- Mumbai — Gateway of India
-- Kashmir — Dal Lake
-- Jaipur — Hawa Mahal, Amer Fort
-- Hyderabad — Charminar, Golconda Fort
-- Mysore — Mysore Palace
-- Amritsar — Golden Temple
-- Aurangabad — Ajanta Caves, Ellora Caves
-- Konark — Konark Sun Temple
-- Madurai — Meenakshi Temple
-- Chennai — Marina Beach
-- Goa — Baga Beach
-- Manali — Manali Hills
-- Leh — Leh Palace, Pangong Lake
-- Ooty — Ooty Lake
-- Munnar — Munnar Tea Gardens
-- Puri — Jagannath Temple
 ## Screenshots
 
 ### Homepage
 
+
+
 ![Homepage](screenshots/home-page.png)
+
+
 
 ### Search Results
 
+
+
 ![Search Results](screenshots/search-results.png)
+
+
 
 ### Destination Details
 
+
+
 ![Destination Details](screenshots/destination-page.png)
 
----
+
 
 ## How It Works
 
-The flow is:
-
-```
+\```text
 User Browser
       |
       v
@@ -88,190 +78,103 @@ Flask Application (AWS EC2)
       |
       v
 SQLite Database
-```
+\```
 
-The application runs on Amazon Linux using systemd.
-
-This allows the app to start automatically after a server reboot and restart if it crashes.
-
----
+Runs on Amazon Linux as a systemd service, so it starts back up on its own after a reboot or a crash. I don't have to SSH in and restart it by hand.
 
 ## Security I Added
 
-While building this project I added:
+Data endpoints need an API key. No key, no data.
 
-### API Key Authentication
-
-Protected endpoints require an API key.
-
-Without the key, the API rejects unauthorized requests.
-
-Example:
-
-```bash
+\```
 curl http://54.242.127.95:5000/spots
-```
+\```
 
 Response:
 
-```json
+\```json
 {
- "error": "Unauthorized"
+  "error": "Unauthorized"
 }
-```
-## Security Demonstration
+\```
 
 ### Unauthorized Request
 
-The API rejects requests that do not include the required API key.
+
 
 ![Unauthorized Request](screenshots/unauthorized-access.png)
 
+
+
 ### API Request Logs
 
-The application records incoming requests with timestamps and IP addresses for monitoring and debugging.
+
 
 ![API Logs](screenshots/api-log.png)
 
----
 
-### Rate Limiting
 
-Limits requests to:
+Past that rate limiting at 100 requests/min per IP, input validation before anything touches the DB, parameterized queries everywhere so there's no string-concatenated SQL, and the basic security headers (X-Frame-Options, X-Content-Type-Options). Requests get logged with timestamp, request info, and IP.
 
-100 requests per minute per IP
+The API key used to be hardcoded in app.py. Bad idea, I know that now moved it to an environment variable plus the systemd config once I understood why that mattered.
 
-This reduces excessive API requests and abuse.
-
----
-
-### Input Validation
-
-User input is checked before database queries.
-
-This prevents invalid requests from reaching the database.
-
----
-
-### SQL Injection Protection
-
-I used parameterized SQL queries instead of directly placing user input into SQL commands.
-
----
-
-### Security Headers
-
-Added:
-
-- X-Frame-Options
-- X-Content-Type-Options
-
----
-
-### Logging
-
-Requests are stored with:
-
-- Timestamp
-- Request information
-- IP address
-
----
+Frontend-side auth is still weak. Haven't gotten to fixing that yet.
 
 ## API Endpoints
 
 | Endpoint | Authentication |
-|---|---|
+|----------|----------------|
 | / | No |
 | /health | No |
 | /spots | Yes |
 | /spots/<city> | Yes |
 | /spot/<name> | No |
 
----
-
 ## Tech Stack
 
-- Python
-- Flask
-- SQLite
-- HTML
-- CSS
-- JavaScript
-- AWS EC2
-- Linux
-- systemd
-- Git
-- GitHub
-
----
+Python, Flask, SQLite, HTML, CSS, JavaScript, AWS EC2, systemd, Git.
 
 ## Project Structure
 
-```
-SecureCloud-Tourist-API
-
+\```
+SecureCloud-Tourist-API/
 ├── app.py
 ├── requirements.txt
-│
 ├── static/
 │   ├── script.js
 │   └── style.css
-│
 └── templates/
     ├── index.html
     └── spot.html
-```
+\```
 
----
+## Run It Yourself
+
+\```
+git clone https://github.com/zubiya-tech/SecureCloud-Tourist-API.git
+cd SecureCloud-Tourist-API
+pip install -r requirements.txt
+python app.py
+\```
 
 ## Problems I Faced
 
-This project was not only about writing code.
+This wasn't just writing routes and calling it done. Real stuff came up along the way the Flask app stopping the second I closed my SSH session, port conflicts from processes I forgot were still running, a git merge conflict I had no idea how to untangle the first time, database files getting tracked by git when they shouldn't have been, and a stretch of just staring at auth errors trying to figure out why the key wasn't matching.
 
-I had to solve real problems:
-
-- Flask app stopping after closing SSH
-- Port conflicts from old processes
-- Git push and merge issues
-- Database files being tracked by Git
-- Debugging API authentication problems
-
-Honestly, these problems taught me more than the tutorials because I had to actually figure out what was happening.
-___
+None of that's in a tutorial. You just hit it and figure it out and honestly that taught me more than the tutorials did.
 
 ## Limitations
 
-This is a learning project, not a production system.
-
-Current limitations:
-
-- HTTP instead of HTTPS
-- SQLite instead of a production database
-- Basic authentication system
-- Limited destinations
-
----
+This is a learning project, not a production system. HTTP instead of HTTPS, SQLite instead of something built for real traffic, basic auth, limited destinations.
 
 ## Future Improvements
 
-- Add HTTPS
-- Improve authentication
-- Move to PostgreSQL
-- Add pagination
-- Add more destinations
-
----
+HTTPS, better authentication, move to PostgreSQL, pagination, more destinations.
 
 ## What I Learned
 
-The biggest thing I learned is that building an application is more than writing code.
-
-
-So instead of just watching tutorials, I built this and learned by breaking things and fixing them.
-
-This project helped me understand the complete journey from code → server → real users.
+Building something is more than writing code. This project took me through the whole path code, server, deployment, security, debugging and most of what I actually learned came from breaking things and having to fix them, not from following steps.
 
 ---
 
-Built by Zubiya 
+Built by **Zubiya** | B.Sc. Computer Science
