@@ -2,5 +2,4 @@ tourist.db
 tourist_backup.db
 api.log
 __pycache__/
-screenshots/
 *.pyc
