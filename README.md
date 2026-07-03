@@ -60,6 +60,19 @@ Currently added destinations include:
 - Ooty — Ooty Lake
 - Munnar — Munnar Tea Gardens
 - Puri — Jagannath Temple
+## Screenshots
+
+### Homepage
+
+![Homepage](screenshots/home-page.png)
+
+### Search Results
+
+![Search Results](screenshots/search-results.png)
+
+### Destination Details
+
+![Destination Details](screenshots/destination-page.png)
 
 ---
 
@@ -106,6 +119,19 @@ Response:
  "error": "Unauthorized"
 }
 ```
+## Security Demonstration
+
+### Unauthorized Request
+
+The API rejects requests that do not include the required API key.
+
+![Unauthorized Request](screenshots/unauthorized-access.png)
+
+### API Request Logs
+
+The application records incoming requests with timestamps and IP addresses for monitoring and debugging.
+
+![API Logs](screenshots/api-log.png)
 
 ---
 
@@ -187,7 +213,6 @@ SecureCloud-Tourist-API
 
 ├── app.py
 ├── requirements.txt
-├── PROJECT_LESSONS.md
 │
 ├── static/
 │   ├── script.js
