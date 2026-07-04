@@ -8,7 +8,7 @@ Live: http://54.242.127.95:5000
 
 ## Why I Built This
 
-Before this I mostly worked with frontend and small scripts. I wanted to understand what's actually happening behind the screen — how a database connects to an API, how something runs on a real server instead of localhost, how you add security to a thing people can hit from the internet.
+Before this I mostly worked with frontend and small scripts. I wanted to understand what's actually happening behind the screen how a database connects to an API, how something runs on a real server instead of localhost, how you add security to a thing people can hit from the internet.
 
 So I built this to learn those things by doing them, not watching a tutorial about them.
 
@@ -48,7 +48,7 @@ Puri — Jagannath Temple
 
 
 
-![Homepage](screenshots/home-page.png)
+![Homepage](screenshots/home-page.png.jpg)
 
 
 
@@ -56,7 +56,7 @@ Puri — Jagannath Temple
 
 
 
-![Search Results](screenshots/search-results.png)
+![Search Results](screenshots/search-results.png.jpg)
 
 
 
@@ -64,7 +64,7 @@ Puri — Jagannath Temple
 
 
 
-![Destination Details](screenshots/destination-page.png)
+![Destination Details](screenshots/destination-page.png.jpg)
 
 
 
@@ -102,7 +102,7 @@ Response:
 
 
 
-![Unauthorized Request](screenshots/unauthorized-access.png)
+![Unauthorized Request](screenshots/unauthorized-access.png.jpg)
 
 
 
@@ -110,7 +110,7 @@ Response:
 
 
 
-![API Logs](screenshots/api-log.png)
+![API Logs](screenshots/api-log.png.jpg)
 
 
 
