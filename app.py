@@ -20,11 +20,11 @@ logging.basicConfig(
     format="%(asctime)s - %(message)s"
 )
 
-# Allow max 100 requests per minute from one IP address
+# Allow max 15 requests per minute from one IP address
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["100 per minute"]
+    default_limits=["15 per minute"]
 )
 
 # Add security headers to every response automatically
