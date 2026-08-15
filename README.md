@@ -94,7 +94,7 @@ Response:
 
 ![API Logs](screenshots/api-log.png.jpg)
 
-Past that, rate limiting at 100 requests/min per IP, input validation before anything touches the DB, parameterized queries everywhere so there's no string-concatenated SQL, and the basic security headers (X-Frame-Options, X-Content-Type-Options). Requests get logged with timestamp, request info, and IP.
+Past that, rate limiting at 15 requests/min per IP, input validation before anything touches the DB, parameterized queries everywhere so there's no string-concatenated SQL, and the basic security headers (X-Frame-Options, X-Content-Type-Options). Requests get logged with timestamp, request info, and IP.
 
 The API key used to be hardcoded in app.py. Bad idea, I know that now. Moved it to an environment variable plus the systemd config once I understood why that mattered.
 
